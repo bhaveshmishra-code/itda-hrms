@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import firebase from '../firebase/clientApp'
 import { getSession } from 'next-auth/client'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
@@ -28,12 +27,9 @@ export default function LeaveStatus(props) {
   const acceptLeave = (leave) => {
     setAcceptLeaveStatus(true)
     setLeave(leave)
-    console.log(leave)
   }
 
-  const rejectLeave = (leave) => {
-    console.log(leave)
-  }
+  const rejectLeave = (leave) => {}
 
   return (
     <>
@@ -81,31 +77,11 @@ export default function LeaveStatus(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <AcceptLeaveDialog
-        open={acceptLeaveOpen}
-        onClose={onAcceptLeaveDialogClose}
-        leave={leave}
-      />
     </>
   )
 }
 
 export async function getServerSideProps(context) {
-  const db = firebase.firestore()
   const session = await getSession(context)
   const data = []
-
-  if (session) {
-    console.log(session.user)
-    const snapshot = await db
-      .collection('leave')
-      .where('user', '==', session.user.email)
-      .get()
-    snapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }))
-  }
-  return {
-    props: {
-      data,
-    },
-  }
 }

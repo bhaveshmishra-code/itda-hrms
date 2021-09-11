@@ -4,17 +4,41 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import axios from 'axios'
 import { Alert, AlertTitle } from '@material-ui/lab'
+import { ApiAction } from '../constants/constant'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  employeeForm: {
+    // bg-gray-100 w-80 mx-auto p-10 rounded-sm border-gray-400 border-1
+    backgroundColor: '#fafafa',
+    width: '80%',
+    margin: '0 auto',
+  },
+  error: {
+    minHeight: '2rem',
+  },
+  formTitle: {},
+  heading: {
+    textAlign: 'center',
+  },
+  label: {
+    color: '#455a64',
+  },
+  inputItem: {
+    padding: '8px',
+  },
+})
 
 const MySnackBar = ({ open, onClose, msg }) => {
   return (
     <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
       {msg.type === 'error' ? (
-        <Alert severity="error" style={{ backgroundColor: 'orange' }}>
+        <Alert severity="error" variant="filled">
           <AlertTitle>Error</AlertTitle>
           {msg.msg}
         </Alert>
       ) : (
-        <Alert severity="success">
+        <Alert severity="success" variant="filled">
           <AlertTitle>Success</AlertTitle>
           {msg.msg}
         </Alert>
@@ -55,6 +79,7 @@ const validate = (values) => {
 const Error = ({ error }) => <div className="text-red-600">{error}</div>
 
 export default function EmployeeForm() {
+  const styles = useStyles()
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState({ type: '', msg: '' })
   const formik = useFormik({
@@ -73,15 +98,19 @@ export default function EmployeeForm() {
   })
 
   async function submitFormData(values) {
-    const response = await axios.post('/api/hrms', values)
+    const response = await axios.post('/api/hrms', {
+      action: ApiAction.CREATE_EMPLOYEE,
+      payload: values,
+    })
     const result = response.data
-    console.log(result)
+
     if (result.success) {
       setSnackBarMessage({
         type: 'success',
         msg: 'Employee Created Successfully',
       })
       setSnackBarOpen(true)
+      formik.resetForm()
     } else {
       setSnackBarMessage({
         type: 'error',
@@ -97,10 +126,8 @@ export default function EmployeeForm() {
 
   return (
     <>
-      <div className="bg-gray-100 w-80 mx-auto p-10 rounded-sm border-gray-400 border-1">
-        <div className="font-semibold py-2 text-center">
-          CREATE NEW EMPLOYEE
-        </div>
+      <div className={styles.employeeForm}>
+        <div className={styles.formTitle}>CREATE NEW EMPLOYEE</div>
         <form onSubmit={formik.handleSubmit}>
           <div>
             <label className="text-gray-700">Employee ID</label>
@@ -114,9 +141,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.id && formik.errors.id ? (
-              <Error error={formik.errors.id} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.id && formik.errors.id ? (
+                <Error error={formik.errors.id} />
+              ) : null}
+            </div>
           </div>
           <div className="py-1">
             <label className="text-gray-700">Name</label>
@@ -130,9 +159,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.employeeName && formik.errors.employeeName ? (
-              <Error error={formik.errors.employeeName} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.employeeName && formik.errors.employeeName ? (
+                <Error error={formik.errors.employeeName} />
+              ) : null}
+            </div>
           </div>
           <div className="py-1">
             <label className="text-gray-700">Designation</label>
@@ -146,9 +177,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.designation && formik.errors.designation ? (
-              <Error error={formik.errors.designation} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.designation && formik.errors.designation ? (
+                <Error error={formik.errors.designation} />
+              ) : null}
+            </div>
           </div>
           <div className="py-1">
             <label className="text-gray-700">Place of Posting</label>
@@ -162,9 +195,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.placeOfPosting && formik.errors.placeOfPosting ? (
-              <Error error={formik.errors.placeOfPosting} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.placeOfPosting && formik.errors.placeOfPosting ? (
+                <Error error={formik.errors.placeOfPosting} />
+              ) : null}
+            </div>
           </div>
           <div className="py-1">
             <label className="text-gray-700">Email</label>
@@ -178,9 +213,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.email && formik.errors.email ? (
-              <Error error={formik.errors.email} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.email && formik.errors.email ? (
+                <Error error={formik.errors.email} />
+              ) : null}
+            </div>
           </div>
           <div className="py-1">
             <label className="text-gray-700">Phone Number</label>
@@ -194,9 +231,11 @@ export default function EmployeeForm() {
               fullWidth
               size="small"
             />
-            {formik.touched.phone && formik.errors.phone ? (
-              <Error error={formik.errors.phone} />
-            ) : null}
+            <div className={styles.error}>
+              {formik.touched.phone && formik.errors.phone ? (
+                <Error error={formik.errors.phone} />
+              ) : null}
+            </div>
           </div>
           <Button
             fullWidth

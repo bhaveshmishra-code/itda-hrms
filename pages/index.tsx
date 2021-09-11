@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/client'
 import SignIn from '../components/SignIn'
-import LeaveStatus from '../components/LeaveStatus'
+import LeaveStatus from 'components/LeaveStatus'
 import { getSession } from 'next-auth/client'
 
 type VoteDocument = {
@@ -20,14 +20,13 @@ export default function Home(props) {
 
   return (
     <div>
-      <LeaveStatus />
+      <LeaveStatus user={session.user} />
     </div>
   )
 }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
-  console.log(session)
   return {
     props: {
       user: session ? session.user : null,

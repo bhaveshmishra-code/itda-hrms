@@ -1,31 +1,20 @@
-import connectDB from '../../middleware/mongo'
-import Employee from '../../models/employee'
+import { ApiAction } from '../../constants/constant'
+import { createEmployee, applyLeave, getLeaveStatus } from 'server/api'
 
 export default async function handle(req, res) {
-  await connectDB()
-
-  const existingEmployeeWithId = await Employee.find({ id: req.body.id }).exec()
-  if (existingEmployeeWithId.length > 0) {
-    res.status(200).json({
-      success: false,
-      errorMsg: `Employee with ID: ${req.body.id} already exists.`,
-    })
-    return
+  var { action, payload } = req.body
+  switch (action) {
+    case ApiAction.CREATE_EMPLOYEE:
+      var { status, success, errorMsg, data } = await createEmployee(payload)
+      res.status(status).json({ success, errorMsg, data })
+      break
+    case ApiAction.APPLY_LEAVE:
+      var { status, success, errorMsg, data } = await applyLeave(payload)
+      res.status(status).json({ success, errorMsg, data })
+    case ApiAction.GET_LEAVE_STATUS:
+      var result = await getLeaveStatus(payload)
+      console.log(result)
+      res.status(200).json(result)
+      break
   }
-
-  const existingEmployeeWithEmail = await Employee.find({
-    email: req.body.email,
-  }).exec()
-
-  if (existingEmployeeWithEmail.length > 0) {
-    res.status(200).json({
-      success: false,
-      errorMsg: `Employee with email: ${req.body.email} already exists.`,
-    })
-    return
-  }
-
-  const employee = new Employee(req.body)
-  const resp = await employee.save()
-  res.status(200).json({ success: true, data: resp })
 }

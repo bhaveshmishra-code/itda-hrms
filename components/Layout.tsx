@@ -4,13 +4,12 @@ import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useState } from 'react'
-import AppDrawer from '../components/AppDrawer'
+import AppDrawer from 'components/AppDrawer'
 import { useSession } from 'next-auth/client'
 import SignIn from '../components/SignIn'
 
 export default function Layout({ children }) {
   const [openDrawer, setOpenDrawer] = useState(false)
-
   const [session, loading] = useSession()
 
   if (loading) {
@@ -42,11 +41,10 @@ export default function Layout({ children }) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <AppDrawer
-        user={session.user}
-        open={openDrawer}
-        onClose={() => setOpenDrawer(false)}
-      />
+      {openDrawer && (
+        <AppDrawer user={session.user} onClose={() => setOpenDrawer(false)} />
+      )}
+
       <div>{children}</div>
     </>
   )

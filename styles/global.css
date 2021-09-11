@@ -4,8 +4,3 @@
     'Apple Color Emoji', 'Segoe UI Emoji';
   background-color: '#EEF0F1';
 } */
-
-/* ./styles/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

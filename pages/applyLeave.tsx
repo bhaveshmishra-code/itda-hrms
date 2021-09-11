@@ -14,9 +14,10 @@ import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel'
 import ErrorDialog from '../components/ErrorDialog'
 import ConfirmDialog from '../components/ConfirmDialog'
-import firebase from '../firebase/clientApp'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import { ApiAction } from '../constants/constant'
+import axios from 'axios'
 
 const useStyles = makeStyles({
   root: {
@@ -65,7 +66,6 @@ export default function ApplyLeave() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date.toDate().toDateString())
-    console.log(date.toDate().toDateString())
   }
 
   const setLeaveDuration = (e) => {
@@ -84,7 +84,6 @@ export default function ApplyLeave() {
       setErrorMessage('The reason input cannot be empty')
       setErrorDialogOpen(true)
     } else {
-      console.log()
       setConfirmDialogOpen(true)
     }
   }
@@ -103,13 +102,14 @@ export default function ApplyLeave() {
   }
 
   const submitLeaveApplication = async () => {
-    const db = firebase.firestore()
-    const result = await db.collection('leave').doc().set({
-      user: session.user.email,
-      numDays: numDays,
-      startingDate: selectedDate,
-      reason: reason,
-      status: 'pending',
+    const response = await axios.post('/api/hrms', {
+      action: ApiAction.APPLY_LEAVE,
+      payload: {
+        email: session.user.email,
+        numDays: numDays,
+        startingDate: selectedDate,
+        reason: reason,
+      },
     })
     setSnackOpen(true)
   }
