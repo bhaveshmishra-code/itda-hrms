@@ -7,6 +7,7 @@ export enum ApiAction {
   REJECT_LEAVE,
   CREATE_DEPARTMENT,
   GET_USER,
+  GET_ACCEPTED_LEAVES,
 }
 
 export enum LeaveStatusType {

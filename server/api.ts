@@ -171,3 +171,11 @@ export async function getUser(payload) {
   const employee = await Employee.findOne({ email: payload.email }).exec()
   return employee
 }
+
+export async function getAcceptedLeaves() {
+  await connectDB()
+  const leaves = await Leave.find({ status: LeaveStatusType.ACCEPTED })
+    .sort({ appliedDate: -1 })
+    .exec()
+  return leaves
+}

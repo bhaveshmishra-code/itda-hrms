@@ -1,5 +1,6 @@
+import Dashboard from 'components/Dashboard'
 import React from 'react'
 
 export default function dashboard() {
-  return <div>This is a dashboard</div>
+  return <Dashboard />
 }

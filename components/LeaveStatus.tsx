@@ -3,6 +3,7 @@ import { ApiAction, LeaveStatusType } from 'constants/constant'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
+import { CentrePage } from 'styled'
 
 const LeaveTable = styled.div`
   margin-top: 8px;
@@ -66,15 +67,21 @@ export default function LeaveStatus({ user }) {
 
   return (
     <>
-      <PageHeader>Leave Status</PageHeader>
-      <LeaveTable>
-        <TableHeader>
-          <div>Num Days</div>
-          <div>Starting Date</div>
-          <div>Status</div>
-        </TableHeader>
-        {leaveItems}
-      </LeaveTable>
+      {data.length === 0 ? (
+        <CentrePage>No Leaves Applied</CentrePage>
+      ) : (
+        <>
+          <PageHeader>Leave Status</PageHeader>
+          <LeaveTable>
+            <TableHeader>
+              <div>Num Days</div>
+              <div>Starting Date</div>
+              <div>Status</div>
+            </TableHeader>
+            {leaveItems}
+          </LeaveTable>
+        </>
+      )}
     </>
   )
 }

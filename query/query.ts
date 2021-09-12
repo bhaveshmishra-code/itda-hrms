@@ -9,3 +9,10 @@ export const getProfileQuery = async (user: IAuthUser) => {
   })
   return result.data
 }
+
+export const getAcceptedLeavesQuery = async () => {
+  const result = await axios.post('/api/hrms', {
+    action: ApiAction.GET_ACCEPTED_LEAVES,
+  })
+  return result.data
+}

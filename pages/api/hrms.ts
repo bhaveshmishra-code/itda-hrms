@@ -10,6 +10,7 @@ import {
   rejectLeave,
   createDepartment,
   getUser,
+  getAcceptedLeaves,
 } from 'server/api'
 
 export default async function handle(req, res) {
@@ -48,6 +49,10 @@ export default async function handle(req, res) {
     case ApiAction.GET_USER:
       var userResult = await getUser(payload)
       res.status(200).json(userResult)
+      break
+    case ApiAction.GET_ACCEPTED_LEAVES:
+      var acceptedLeaveResult = await getAcceptedLeaves()
+      res.status(200).json(acceptedLeaveResult)
       break
   }
 }
