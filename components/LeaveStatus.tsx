@@ -2,13 +2,46 @@ import React, { useEffect, useState } from 'react'
 import { ApiAction, LeaveStatusType } from 'constants/constant'
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
+import styled from 'styled-components'
+
+const LeaveTable = styled.div`
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #455a64;
+`
+
+const TableHeader = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 1px solid #cfd8dc;
+  padding-bottom: 4px;
+`
+
+const TableRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #cfd8dc;
+`
+
+const TableCell = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 4px;
+`
+const PageHeader = styled.div`
+  font-weight: 700;
+  color: #455a64;
+  margin-inline: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+`
 
 export default function LeaveStatus({ user }) {
   const { isLoading, error, data } = useQuery('leaveData', async () => {
@@ -23,9 +56,7 @@ export default function LeaveStatus({ user }) {
 
   const leaveItems = data.map((item) => (
     <TableRow key={item._id}>
-      <TableCell component="th" scope="row">
-        {item.numDays}
-      </TableCell>
+      <TableCell>{item.numDays}</TableCell>
       <TableCell>{item.startingDate}</TableCell>
       <TableCell>
         <StatusCell status={item.status} />
@@ -34,18 +65,17 @@ export default function LeaveStatus({ user }) {
   ))
 
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Num Days</TableCell>
-            <TableCell>Starting Date</TableCell>
-            <TableCell align="left">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{leaveItems}</TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <PageHeader>Leave Status</PageHeader>
+      <LeaveTable>
+        <TableHeader>
+          <div>Num Days</div>
+          <div>Starting Date</div>
+          <div>Status</div>
+        </TableHeader>
+        {leaveItems}
+      </LeaveTable>
+    </>
   )
 }
 
@@ -57,11 +87,10 @@ function StatusCell({ status }) {
       style={{
         backgroundColor: `${statusColor}`,
         textAlign: 'center',
-        padding: '0.75vw 0',
-        borderRadius: '1vw',
-        maxWidth: '8rem',
-        display: 'grid',
-        placeContent: 'center',
+        width: '80%',
+        padding: '0.25rem 0',
+        borderRadius: '4px',
+        fontWeight: 500,
       }}
     >
       {leaveStatus}
@@ -72,13 +101,13 @@ function StatusCell({ status }) {
 const getStatusString = (status) => {
   switch (status) {
     case LeaveStatusType.ACCEPTED:
-      return ['ACCEPTED', '#4fc3f7']
+      return ['ACCEPTED', '#90caf9']
       break
     case LeaveStatusType.PENDING:
-      return ['PENDING', '#b0bec5']
+      return ['PENDING', '#e0e0e0']
       break
     case LeaveStatusType.REJECTED:
-      return ['REJECTED', '#ff7043']
+      return ['REJECTED', '#ef9a9a']
       break
   }
 }

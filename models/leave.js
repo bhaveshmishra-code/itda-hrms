@@ -2,8 +2,12 @@ import mongoose from 'mongoose'
 import { LeaveStatusType } from '../constants/constant'
 var Schema = mongoose.Schema
 
-var leave = new Schema({
+var leaveSchema = new Schema({
   email: {
+    type: String,
+    required: true,
+  },
+  employeeName: {
     type: String,
     required: true,
   },
@@ -15,6 +19,10 @@ var leave = new Schema({
     type: String,
     required: true,
   },
+  leaveDates: {
+    type: [String],
+    required: true,
+  },
   reason: {
     type: String,
     required: true,
@@ -23,10 +31,26 @@ var leave = new Schema({
     type: Number,
     default: LeaveStatusType.PENDING,
   },
+  reportingAuthority: {
+    type: String,
+    default: 'poitda.utn@gmail.com',
+  },
+  designation: {
+    type: String,
+  },
+  department: {
+    type: String,
+  },
+  placeOfPosting: {
+    type: String,
+  },
+  appliedDate: {
+    type: Date,
+    default: new Date(),
+  },
 })
 
 mongoose.models = {}
 
-var Leave = mongoose.model('Leave', leave)
-
+const Leave = mongoose.model('leave', leaveSchema)
 export default Leave

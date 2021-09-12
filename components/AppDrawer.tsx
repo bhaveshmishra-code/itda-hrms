@@ -2,15 +2,14 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { Divider, IconButton } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 import { signOut } from 'next-auth/client'
-import Link from 'next/link'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import DateRangeTwoToneIcon from '@material-ui/icons/DateRangeTwoTone'
-import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone'
-import AssessmentTwoToneIcon from '@material-ui/icons/AssessmentTwoTone'
-import PlaylistAddCheckTwoToneIcon from '@material-ui/icons/PlaylistAddCheckTwoTone'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
+import axios from 'axios'
+import { ApiAction } from 'constants/constant'
+import { useQuery } from 'react-query'
+import { IAuthUser } from 'ts'
+import { getProfileQuery } from 'query/query'
 
 const useStyles = makeStyles({
   sidebar: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
     top: '0',
     bottom: '0',
     boxSizing: 'border-box',
-    zIndex: '10',
+    zIndex: 10,
   },
   sidebarHeader: {
     display: 'grid',
@@ -36,6 +35,7 @@ const useStyles = makeStyles({
     fontWeight: 'bolder',
   },
   sidebarItem: {
+    boxSizing: 'border-box',
     color: 'rgb(96, 103, 112)',
     display: 'flex',
     width: '100%',
@@ -43,57 +43,71 @@ const useStyles = makeStyles({
     gap: '8px',
     alignItems: 'center',
     cursor: 'pointer',
+    textDecoration: 'none',
+    '&:hover': {
+      background: '#e0e0e0',
+      borderRadius: '4px',
+    },
   },
 })
 
 export default function AppDrawer({ user, onClose }) {
-  const router = useRouter()
   const styles = useStyles()
+
+  const {
+    isLoading,
+    error,
+    data: profile,
+  } = useQuery('getUser', () => getProfileQuery(user))
+
   const handleClickAway = () => {
     onClose()
   }
   const logOut = () => {
     signOut()
   }
+
+  if (isLoading) {
+    return <></>
+  }
+
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>{user.name}</div>
+
         <Divider />
+
         <Link href="/">
-          <a className={styles.sidebarItem}>
-            <HomeTwoToneIcon />
-            Home
-          </a>
-        </Link>
-        <Link href="/">
-          <a className={styles.sidebarItem}>
-            <AssessmentTwoToneIcon />
-            Dashboard
-          </a>
-        </Link>
-        <Link href="/">
-          <a className={styles.sidebarItem}>
-            <PlaylistAddCheckTwoToneIcon />
-            Sanction Leave
-          </a>
+          <a className={styles.sidebarItem}>Home</a>
         </Link>
 
-        <a
-          className={styles.sidebarItem}
-          onClick={() => {
-            onClose()
-            router.push('/applyLeave')
-          }}
-        >
-          <DateRangeTwoToneIcon />
-          Apply Leave
-        </a>
+        {profile.isLeaveSanctionAuthority && (
+          <Link href="/dashboard">
+            <a className={styles.sidebarItem}>Dashboard</a>
+          </Link>
+        )}
 
-        <button onClick={logOut} className={styles.sidebarItem}>
+        {profile.isLeaveSanctionAuthority && (
+          <Link href="/acceptRejectLeave">
+            <a className={styles.sidebarItem}>Sanction Leave</a>
+          </Link>
+        )}
+
+        <Link href="/applyLeave">
+          <a className={styles.sidebarItem}>Apply Leave</a>
+        </Link>
+
+        {profile.isUserCreateAuthority && (
+          <Link href="/createEmployee">
+            <a className={styles.sidebarItem}>Create Employee</a>
+          </Link>
+        )}
+
+        <a onClick={logOut} className={styles.sidebarItem}>
           <ExitToAppIcon />
           <span>Log Out</span>
-        </button>
+        </a>
       </div>
     </ClickAwayListener>
   )

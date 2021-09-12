@@ -2,6 +2,9 @@ import { useSession } from 'next-auth/client'
 import SignIn from '../components/SignIn'
 import LeaveStatus from 'components/LeaveStatus'
 import { getSession } from 'next-auth/client'
+import { useQuery } from 'react-query'
+import { getProfileQuery } from 'query/query'
+import Dashboard from 'components/Dashboard'
 
 type VoteDocument = {
   vote: string
@@ -9,19 +12,18 @@ type VoteDocument = {
 
 export default function Home(props) {
   const [session, loading] = useSession()
-
-  if (loading) {
-    return <h1>Loading ...</h1>
-  }
-
-  if (!session) {
-    return <SignIn />
+  const { isLoading, data: profile } = useQuery('getUser', () =>
+    getProfileQuery(session.user)
+  )
+  if (isLoading) {
+    return <></>
   }
 
   return (
-    <div>
-      <LeaveStatus user={session.user} />
-    </div>
+    <>
+      {!profile.isLeaveSanctionAuthority && <LeaveStatus user={session.user} />}
+      {profile.isLeaveSanctionAuthority && <Dashboard />}
+    </>
   )
 }
 

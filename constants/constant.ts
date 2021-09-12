@@ -2,6 +2,11 @@ export enum ApiAction {
   APPLY_LEAVE,
   CREATE_EMPLOYEE,
   GET_LEAVE_STATUS,
+  ACCEPT_REJECT_LEAVE,
+  ACCEPT_LEAVE,
+  REJECT_LEAVE,
+  CREATE_DEPARTMENT,
+  GET_USER,
 }
 
 export enum LeaveStatusType {

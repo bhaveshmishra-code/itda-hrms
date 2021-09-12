@@ -6,14 +6,30 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-export default function ConfirmDialog({
+const getDateString = (date) => {
+  const d = new Date(date)
+
+  var dateString =
+    ('0' + d.getDate()).slice(-2) +
+    '-' +
+    ('0' + (d.getMonth() + 1)).slice(-2) +
+    '-' +
+    d.getFullYear()
+  return dateString
+}
+
+export default function ConfirmApplyLeaveDialog({
   open,
   onClose,
-  numDays,
-  startingDate,
+  values,
+  onConfirm,
 }) {
   const handleClose = () => {
     onClose()
+  }
+
+  const confirmSubmission = () => {
+    onConfirm()
   }
 
   return (
@@ -27,13 +43,20 @@ export default function ConfirmDialog({
         <DialogTitle id="alert-dialog-title">{'Confirm'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <h3>Number of days: {numDays}</h3>
-            <h3>Starting Date: {startingDate}</h3>
+            <h3>Number of days: {values.numDays}</h3>
+            <h3>Starting Date: {getDateString(values.startingDate)}</h3>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            APPLY LEAVE
+          <Button onClick={handleClose} variant="contained">
+            CANCEL
+          </Button>
+          <Button
+            onClick={confirmSubmission}
+            color="primary"
+            variant="contained"
+          >
+            CONFIRM
           </Button>
         </DialogActions>
       </Dialog>
