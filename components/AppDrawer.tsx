@@ -5,10 +5,7 @@ import { Divider, IconButton } from '@material-ui/core'
 import { signOut } from 'next-auth/client'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Link from 'next/link'
-import axios from 'axios'
-import { ApiAction } from 'constants/constant'
 import { useQuery } from 'react-query'
-import { IAuthUser } from 'ts'
 import { getProfileQuery } from 'query/query'
 
 const useStyles = makeStyles({
@@ -25,6 +22,10 @@ const useStyles = makeStyles({
     top: '0',
     bottom: '0',
     boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+
     zIndex: 10,
   },
   sidebarHeader: {
@@ -64,7 +65,9 @@ export default function AppDrawer({ user, onClose }) {
     onClose()
   }
   const logOut = () => {
-    signOut()
+    signOut({
+      callbackUrl: `${window.location.origin}`,
+    })
   }
 
   if (isLoading) {

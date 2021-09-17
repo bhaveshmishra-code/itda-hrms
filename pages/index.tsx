@@ -5,6 +5,7 @@ import { getSession } from 'next-auth/client'
 import { useQuery } from 'react-query'
 import { getProfileQuery } from 'query/query'
 import Dashboard from 'components/Dashboard'
+import Loading from 'components/Loading'
 
 type VoteDocument = {
   vote: string
@@ -16,7 +17,7 @@ export default function Home(props) {
     getProfileQuery(session.user)
   )
   if (isLoading) {
-    return <></>
+    return <Loading />
   }
 
   return (

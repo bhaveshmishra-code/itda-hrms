@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/client'
 import SignIn from '../components/SignIn'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import Loading from './Loading'
 
 export default function Layout({ children }) {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function Layout({ children }) {
   }, [router])
 
   if (loading) {
-    return <h1>Loading ...</h1>
+    return <></>
   }
 
   if (!session) {

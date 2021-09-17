@@ -4,16 +4,17 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { CentrePage } from 'styled'
+import Loading from './Loading'
 
 const LeaveTable = styled.div`
   margin-top: 8px;
-  font-size: 1rem;
+  font-size: clamp(8px, 2vw, 1.25rem);
   color: #455a64;
 `
 
 const TableHeader = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   margin-bottom: 8px;
   font-weight: 700;
   text-align: center;
@@ -23,7 +24,7 @@ const TableHeader = styled.div`
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   margin-bottom: 8px;
   border-bottom: 1px solid #cfd8dc;
 `
@@ -41,8 +42,19 @@ const PageHeader = styled.div`
   color: #455a64;
   margin-inline: 1rem;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: clamp(16px, 4vw, 2rem);
 `
+
+const getDateString = (dateObj) => {
+  var d = new Date(dateObj)
+  var dateString =
+    ('0' + d.getDate()).slice(-2) +
+    '-' +
+    ('0' + (d.getMonth() + 1)).slice(-2) +
+    '-' +
+    d.getFullYear()
+  return dateString
+}
 
 export default function LeaveStatus({ user }) {
   const { isLoading, error, data } = useQuery('leaveData', async () => {
@@ -53,10 +65,11 @@ export default function LeaveStatus({ user }) {
     return result.data.leaves
   })
 
-  if (isLoading) return <div>Loading</div>
+  if (isLoading) return <Loading />
 
   const leaveItems = data.map((item) => (
     <TableRow key={item._id}>
+      <TableCell>{getDateString(item.appliedDate)}</TableCell>
       <TableCell>{item.numDays}</TableCell>
       <TableCell>{item.startingDate}</TableCell>
       <TableCell>
@@ -74,6 +87,7 @@ export default function LeaveStatus({ user }) {
           <PageHeader>Leave Status</PageHeader>
           <LeaveTable>
             <TableHeader>
+              <div>Application Date</div>
               <div>Num Days</div>
               <div>Starting Date</div>
               <div>Status</div>

@@ -12,6 +12,7 @@ import RejectLeaveDialog from 'components/RejectLeaveDialog'
 import styled from 'styled-components'
 import { ILeaveData } from 'ts'
 import { CentrePage } from 'styled'
+import Loading from './Loading'
 
 const useStyles = makeStyles({
   table: {
@@ -74,7 +75,7 @@ export default function AcceptRejectLeave() {
     }
   )
 
-  if (isLoading) return <div>Loading</div>
+  if (isLoading) return <Loading />
 
   const acceptLeave = (leave) => {
     setLeave(leave)
