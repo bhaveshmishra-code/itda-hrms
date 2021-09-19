@@ -124,7 +124,7 @@ export async function applyLeave(user, payload: ILeave) {
 
 export async function createEmployee(payload: IEmployee) {
   await connectDB()
-  console.log(payload)
+  // console.log(payload)
   const existingEmployeeWithId = await Employee.find({
     employeeId: payload.employeeId,
   }).exec()
@@ -231,9 +231,11 @@ export async function getUser(payload) {
 
 export async function getAcceptedLeaves(payload) {
   await connectDB()
+
   const leaves = await Leave.find({
     status: LeaveStatusType.ACCEPTED,
-    leaveDates: payload,
+    leaveDates: payload.filterDate,
+    reportingAuthority: payload.reportingAuthority,
   })
     .sort({ appliedDate: -1 })
     .exec()

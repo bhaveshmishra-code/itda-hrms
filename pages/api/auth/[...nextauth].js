@@ -7,7 +7,7 @@ const options = {
   site: process.env.NEXTAUTH_URL,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(process.env.SUPER_USER)
+      // console.log(process.env.SUPER_USER)
       if (email === process.env.SUPER_USER) {
         return true
       }

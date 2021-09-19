@@ -12,5 +12,6 @@ export default function ProfilePage() {
   if (!session) {
     return <SignIn />
   }
+  // console.log(session.user)
   return <Profile user={session.user} />
 }

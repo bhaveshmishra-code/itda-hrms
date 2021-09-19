@@ -23,7 +23,7 @@ export default function Home(props) {
   return (
     <>
       {!profile.isLeaveSanctionAuthority && <LeaveStatus user={session.user} />}
-      {profile.isLeaveSanctionAuthority && <Dashboard />}
+      {profile.isLeaveSanctionAuthority && <Dashboard user={session.user} />}
     </>
   )
 }

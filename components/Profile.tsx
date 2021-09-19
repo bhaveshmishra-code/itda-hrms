@@ -41,7 +41,7 @@ export default function Profile({ user }) {
     return <Loading />
   }
 
-  console.log(data)
+  // console.log(data)
   return (
     <Page>
       <ProfilePage>

@@ -141,7 +141,6 @@ export default function ApplyLeaveForm() {
       payload: newValues,
     })
     const result = response.data
-    console.log(result)
     formik.resetForm()
     if (result.success) {
       setSnackBarMessage({
@@ -167,7 +166,7 @@ export default function ApplyLeaveForm() {
   }
 
   function handleDateChange(value) {
-    console.log(value.toDate())
+    // console.log(value.toDate())
     formik.setFieldValue('startingDate', value.toDate())
   }
 

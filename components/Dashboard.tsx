@@ -21,6 +21,11 @@ const PageHeader = styled.div`
   justify-content: center;
 `
 
+const Page = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+`
+
 const LeaveCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,9 +75,9 @@ const getLeaveDescription = (numDays, startingDate) => {
   }
 }
 
-export default function Dashboard() {
+export default function Dashboard({ user }) {
   const [filterDate, setFilterDate] = useState(new Date())
-
+  // console.log(user)
   const handleDateChange = (e) => {
     setFilterDate(e.toDate())
   }
@@ -94,14 +99,14 @@ export default function Dashboard() {
           />
         </MuiPickersUtilsProvider>{' '}
       </PageHeader>
-      <LeaveData filterDate={getDateString(filterDate)} />
+      <LeaveData filterDate={getDateString(filterDate)} user={user} />
     </>
   )
 }
 
-const LeaveData = ({ filterDate }) => {
+const LeaveData = ({ filterDate, user }) => {
   const { data, isLoading, refetch } = useQuery('getAcceptedLeaves', () =>
-    getAcceptedLeavesQuery(filterDate)
+    getAcceptedLeavesQuery(filterDate, user)
   )
 
   useEffect(() => {
@@ -135,12 +140,12 @@ const LeaveData = ({ filterDate }) => {
   ))
 
   return (
-    <>
+    <Page>
       {data.length === 0 ? (
         <NoLeave>No Employee on leave !</NoLeave>
       ) : (
         <>{leaves}</>
       )}
-    </>
+    </Page>
   )
 }
