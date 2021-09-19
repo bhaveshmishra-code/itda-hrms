@@ -1,6 +1,5 @@
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useEffect, useState } from 'react'
@@ -9,7 +8,7 @@ import { useSession } from 'next-auth/client'
 import SignIn from '../components/SignIn'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import Loading from './Loading'
+import Head from 'next/head'
 
 export default function Layout({ children }) {
   const router = useRouter()
@@ -30,6 +29,16 @@ export default function Layout({ children }) {
 
   return (
     <>
+      <Head>
+        <title>ITDA HRMS</title>
+        <meta property="og:title" content="ITDA HRMS" key="title" />
+        <meta property="og:description" content="Leave Sanctioning" />
+        <meta property="og:url" content="https://itda-hrms.vercel.app" />
+        <meta
+          property="og:image"
+          content="https://itda-hrms.vercel.app/hrms.png"
+        />
+      </Head>
       <AppBar
         elevation={0}
         position="static"

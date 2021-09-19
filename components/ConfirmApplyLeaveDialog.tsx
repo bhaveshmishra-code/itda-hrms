@@ -5,6 +5,15 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import styled from 'styled-components'
+
+const ConfirmText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+  font-weight: 500;
+`
 
 const getDateString = (date) => {
   const d = new Date(date)
@@ -42,15 +51,13 @@ export default function ConfirmApplyLeaveDialog({
       >
         <DialogTitle id="alert-dialog-title">{'Confirm'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <h3>Number of days: {values.numDays}</h3>
-            <h3>Starting Date: {getDateString(values.startingDate)}</h3>
-          </DialogContentText>
+          <ConfirmText>
+            <div>Number of days: {values.numDays}</div>
+            <div>Starting Date: {getDateString(values.startingDate)}</div>
+          </ConfirmText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant="contained">
-            CANCEL
-          </Button>
+          <Button onClick={handleClose}>CANCEL</Button>
           <Button
             onClick={confirmSubmission}
             color="primary"
