@@ -24,7 +24,21 @@ export default function Layout({ children }) {
   }
 
   if (!session) {
-    return <SignIn />
+    return (
+      <>
+        <Head>
+          <title>ITDA HRMS</title>
+          <meta property="og:title" content="ITDA HRMS" key="title" />
+          <meta property="og:description" content="Leave Sanctioning" />
+          <meta property="og:url" content="https://itda-hrms.vercel.app" />
+          <meta
+            property="og:image"
+            content="https://itda-hrms.vercel.app/hrms.png"
+          />
+        </Head>
+        <SignIn />
+      </>
+    )
   }
 
   return (
