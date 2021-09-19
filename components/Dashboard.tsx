@@ -8,7 +8,6 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
-import { useFormik } from 'formik'
 
 const PageHeader = styled.div`
   display: flex;
@@ -42,8 +41,6 @@ const LeaveCard = styled.div`
     font-weight: 500;
     font-size: 1 rem;
   }
-  /* box-shadow: 0px 2px 1px -2px rgba(0, 0, 0, 0.2), */
-  /* 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
 `
 
 const NoLeave = styled.div`

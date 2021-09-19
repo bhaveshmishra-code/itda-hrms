@@ -4,6 +4,59 @@ import Department from 'models/department'
 import Employee from 'models/employee'
 
 import { LeaveStatusType } from 'constants/constant'
+import axios from 'axios'
+
+const webAppUrl =
+  'https://script.google.com/macros/s/AKfycbzyRXrqwjesNQDeAsD2jxCal5ozub10O5ceRg0A-faSkpg4T4jvk0PUQRYGnUzQ_6N7/exec'
+
+const sendGmail = async (recipient, subject, body) => {
+  const gScriptUrl =
+    webAppUrl + `?recipient=${recipient}&subject=${subject}&body=${body}`
+  const result = await axios.get(gScriptUrl)
+}
+
+const sendLeaveAcceptNotification = (leave) => {
+  const recipient = leave.email
+  const subject = 'Leave Accepted'
+  let leaveDayString = ''
+  if (leave.numDays === 1) {
+    leaveDayString = `1 day leave on ${leave.startingDate}`
+  } else {
+    leaveDayString = `${leave.numDays} days leave starting from ${leave.startingDate}`
+  }
+
+  const body = `Your application for ${leaveDayString} has been ACCEPTED by ${leave.reportingAuthority}`
+  sendGmail(recipient, subject, body)
+}
+
+const sendLeaveRejectNotification = (leave) => {
+  const recipient = leave.email
+  const subject = 'Leave Rejected'
+  let leaveDayString = ''
+  if (leave.numDays === 1) {
+    leaveDayString = `1 day leave on ${leave.startingDate}`
+  } else {
+    leaveDayString = `${leave.numDays} days leave starting from ${leave.startingDate}`
+  }
+
+  const body = `Your application for ${leaveDayString} has been REJECTED by ${leave.reportingAuthority}`
+  sendGmail(recipient, subject, body)
+}
+
+const sendLeaveApplyNotification = (leaveObj) => {
+  const recipient = leaveObj.reportingAuthority
+  const subject = 'New Leave Application'
+  let leaveDayString = ''
+  if (leaveObj.numDays === 1) {
+    leaveDayString = `1 day leave on ${leaveObj.startingDate}`
+  } else {
+    leaveDayString = `${leaveObj.numDays} days leave starting from ${leaveObj.startingDate}`
+  }
+
+  const body = `${leaveObj.employeeName}, ${leaveObj.designation}, ${leaveObj.placeOfPosting} has applied for ${leaveDayString}`
+
+  sendGmail(recipient, subject, body)
+}
 
 interface IEmployee {
   employeeId: string
@@ -62,6 +115,8 @@ export async function applyLeave(user, payload: ILeave) {
   }
   const leave = new Leave(leaveObj)
   const result = await leave.save()
+  //send email to the reporting authority
+  sendLeaveApplyNotification(leaveObj)
   return {
     success: true,
   }
@@ -125,6 +180,7 @@ export async function acceptLeave(leave) {
     { _id: leave._id },
     { status: LeaveStatusType.ACCEPTED }
   )
+  sendLeaveAcceptNotification(leave)
 }
 
 export async function rejectLeave(leave) {
@@ -133,6 +189,7 @@ export async function rejectLeave(leave) {
     { _id: leave._id },
     { status: LeaveStatusType.REJECTED }
   )
+  sendLeaveRejectNotification(leave)
 }
 
 export async function createDepartment(payload) {
