@@ -101,6 +101,10 @@ export default function AppDrawer({ user, onClose }) {
           </Link>
         )}
 
+        <Link href="/profile">
+          <a className={styles.sidebarItem}>Profile</a>
+        </Link>
+
         <a onClick={logOut} className={styles.sidebarItem}>
           <ExitToAppIcon />
           <span>Log Out</span>

@@ -18,3 +18,7 @@ export const getAcceptedLeavesQuery = async (filterDate: string) => {
   })
   return result.data
 }
+
+export const QueryKey = {
+  PROFILE_QUERY: 'profile_query',
+}
