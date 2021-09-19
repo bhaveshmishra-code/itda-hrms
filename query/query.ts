@@ -10,9 +10,11 @@ export const getProfileQuery = async (user: IAuthUser) => {
   return result.data
 }
 
-export const getAcceptedLeavesQuery = async () => {
+export const getAcceptedLeavesQuery = async (filterDate: string) => {
+  console.log('Get accepted leave query', filterDate)
   const result = await axios.post('/api/hrms', {
     action: ApiAction.GET_ACCEPTED_LEAVES,
+    payload: filterDate,
   })
   return result.data
 }

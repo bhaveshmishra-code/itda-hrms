@@ -51,7 +51,7 @@ export default async function handle(req, res) {
       res.status(200).json(userResult)
       break
     case ApiAction.GET_ACCEPTED_LEAVES:
-      var acceptedLeaveResult = await getAcceptedLeaves()
+      var acceptedLeaveResult = await getAcceptedLeaves(payload)
       res.status(200).json(acceptedLeaveResult)
       break
   }

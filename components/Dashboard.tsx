@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAcceptedLeavesQuery } from 'query/query'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { ILeaveData } from 'ts'
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers'
+import MomentUtils from '@date-io/moment'
+import { useFormik } from 'formik'
 
 const PageHeader = styled.div`
-  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #37474f;
   display: flex;
@@ -13,72 +23,127 @@ const PageHeader = styled.div`
 `
 
 const LeaveCard = styled.div`
+  display: flex;
+  flex-direction: column;
   border-radius: 4px;
-  border: 1px solid #fafafa;
+  border: 1px solid #f5f5f5;
   background-color: #f5f5f5;
   margin: 8px 0;
   color: #455a64;
+  padding: 4px 4px;
   font-weight: 400;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  box-shadow: 0px 2px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-`
-const CardRow = styled.div`
-  display: flex;
-  justify-content: space-between;
+
+  .name {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .designation,
+  .place {
+    font-weight: 500;
+    font-size: 1 rem;
+  }
+  /* box-shadow: 0px 2px 1px -2px rgba(0, 0, 0, 0.2), */
+  /* 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
 `
 
-const ItemLabel = styled.span`
-  padding-inline: 4px;
-  font-weight: 400;
+const NoLeave = styled.div`
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 `
-const ItemValue = styled.span`
-  font-weight: 500;
-  padding-inline: 4px;
-`
+
+const getDateString = (d) => {
+  var dateString =
+    ('0' + d.getDate()).slice(-2) +
+    '-' +
+    ('0' + (d.getMonth() + 1)).slice(-2) +
+    '-' +
+    d.getFullYear()
+  return dateString
+}
+
+const getLeaveDescription = (numDays, startingDate) => {
+  if (numDays === 1) {
+    return ` day leave on `
+  } else {
+    return ` days leave starting from `
+  }
+}
 
 export default function Dashboard() {
-  const { data, isLoading } = useQuery(
-    'getAcceptedLeaves',
-    getAcceptedLeavesQuery
+  const [filterDate, setFilterDate] = useState(new Date())
+
+  const handleDateChange = (e) => {
+    setFilterDate(e.toDate())
+  }
+
+  return (
+    <>
+      <PageHeader>
+        <div>Employees On Leave:</div>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <KeyboardDatePicker
+            margin="normal"
+            id="startingDate"
+            size="small"
+            name="startingDate"
+            format="DD/MM/yyyy"
+            value={filterDate}
+            onChange={handleDateChange}
+            inputVariant="outlined"
+          />
+        </MuiPickersUtilsProvider>{' '}
+      </PageHeader>
+      <LeaveData filterDate={getDateString(filterDate)} />
+    </>
   )
+}
+
+const LeaveData = ({ filterDate }) => {
+  const { data, isLoading, refetch } = useQuery('getAcceptedLeaves', () =>
+    getAcceptedLeavesQuery(filterDate)
+  )
+
+  useEffect(() => {
+    refetch()
+  }, [filterDate, refetch])
+
   if (isLoading) return <></>
 
   const leaves = data.map((row: ILeaveData) => (
     <LeaveCard key={row._id}>
-      <CardRow>
-        <ItemLabel>Name</ItemLabel>
-        <ItemValue>{row.employeeName}</ItemValue>
-      </CardRow>
-      <CardRow>
-        <ItemLabel>Designation</ItemLabel>
-        <ItemValue>{row.designation}</ItemValue>
-      </CardRow>
-      <CardRow>
-        <ItemLabel>Department</ItemLabel>
-        <ItemValue>{row.department}</ItemValue>
-      </CardRow>
-      <CardRow>
-        <ItemLabel>Place of Posting</ItemLabel>
-        <ItemValue>{row.placeOfPosting}</ItemValue>
-      </CardRow>
-      <CardRow>
-        <ItemLabel>Days</ItemLabel>
-        <ItemValue>{row.numDays}</ItemValue>
-      </CardRow>
-      <CardRow>
-        <ItemLabel>Starting Date</ItemLabel>
-        <ItemValue>{row.startingDate}</ItemValue>
-      </CardRow>
-      <CardRow></CardRow>
+      <div>
+        <div className="name">{row.employeeName}</div>
+      </div>
+      <div>
+        <div>{row.designation}</div>
+      </div>
+      <div>
+        <div>{row.department}</div>
+      </div>
+      <div>
+        <div>{row.placeOfPosting}</div>
+      </div>
+      <div>
+        <div>
+          <strong>{row.numDays}</strong>
+          {getLeaveDescription(row.numDays, row.startingDate)}
+          <strong>{row.startingDate}</strong>
+        </div>
+      </div>
     </LeaveCard>
   ))
+
   return (
     <>
-      <PageHeader>Employees On Leave</PageHeader>
-      {leaves}
+      {data.length === 0 ? (
+        <NoLeave>No Employee on leave !</NoLeave>
+      ) : (
+        <>{leaves}</>
+      )}
     </>
   )
 }

@@ -172,9 +172,12 @@ export async function getUser(payload) {
   return employee
 }
 
-export async function getAcceptedLeaves() {
+export async function getAcceptedLeaves(payload) {
   await connectDB()
-  const leaves = await Leave.find({ status: LeaveStatusType.ACCEPTED })
+  const leaves = await Leave.find({
+    status: LeaveStatusType.ACCEPTED,
+    leaveDates: payload,
+  })
     .sort({ appliedDate: -1 })
     .exec()
   return leaves

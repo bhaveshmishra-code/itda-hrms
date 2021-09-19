@@ -25,7 +25,7 @@ export default function AcceptLeaveDialog({ open, onClose, leave }) {
     <div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{'Approve Leave?'}</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ minWidth: '200px' }}>
           <DialogContentText></DialogContentText>
         </DialogContent>
         <DialogActions>

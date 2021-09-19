@@ -86,12 +86,6 @@ export default function AppDrawer({ user, onClose }) {
         </Link>
 
         {profile.isLeaveSanctionAuthority && (
-          <Link href="/dashboard">
-            <a className={styles.sidebarItem}>Dashboard</a>
-          </Link>
-        )}
-
-        {profile.isLeaveSanctionAuthority && (
           <Link href="/acceptRejectLeave">
             <a className={styles.sidebarItem}>Sanction Leave</a>
           </Link>
