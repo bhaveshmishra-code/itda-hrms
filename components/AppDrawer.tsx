@@ -95,6 +95,12 @@ export default function AppDrawer({ user, onClose }) {
           <a className={styles.sidebarItem}>Apply Leave</a>
         </Link>
 
+        {profile.isLeaveSanctionAuthority && (
+          <Link href="/leaveStatus">
+            <a className={styles.sidebarItem}>Leave Status</a>
+          </Link>
+        )}
+
         {profile.isUserCreateAuthority && (
           <Link href="/createEmployee">
             <a className={styles.sidebarItem}>Create Employee</a>
