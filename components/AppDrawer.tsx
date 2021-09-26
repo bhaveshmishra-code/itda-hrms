@@ -7,6 +7,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
 import { getProfileQuery } from 'query/query'
+import axios from 'axios'
+import { ApiAction } from 'constants/constant'
 
 const useStyles = makeStyles({
   sidebar: {
@@ -65,6 +67,12 @@ export default function AppDrawer({ user, onClose }) {
     onClose()
   }
   const logOut = () => {
+    axios.post('/api/hrms', {
+      action: ApiAction.LOGOUT,
+      payload: {
+        email: user.email,
+      },
+    })
     signOut({
       callbackUrl: `${window.location.origin}`,
     })

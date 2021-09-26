@@ -8,10 +8,16 @@ export enum ApiAction {
   CREATE_DEPARTMENT,
   GET_USER,
   GET_ACCEPTED_LEAVES,
+  LOGOUT,
 }
 
 export enum LeaveStatusType {
   PENDING,
   ACCEPTED,
   REJECTED,
+}
+
+export enum UserActivityType {
+  LOGIN,
+  LOGOUT,
 }

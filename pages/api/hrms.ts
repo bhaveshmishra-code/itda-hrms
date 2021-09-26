@@ -11,6 +11,7 @@ import {
   createDepartment,
   getUser,
   getAcceptedLeaves,
+  logOutUser,
 } from 'server/api'
 
 export default async function handle(req, res) {
@@ -53,6 +54,10 @@ export default async function handle(req, res) {
     case ApiAction.GET_ACCEPTED_LEAVES:
       var acceptedLeaveResult = await getAcceptedLeaves(payload)
       res.status(200).json(acceptedLeaveResult)
+      break
+    case ApiAction.LOGOUT:
+      var logOutResult = await logOutUser(payload)
+      res.status(200).json('Logged out')
       break
   }
 }

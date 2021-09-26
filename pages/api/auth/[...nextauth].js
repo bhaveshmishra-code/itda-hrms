@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 import Employee from '../../../models/employee'
+import UserActivity from '../../../models/userActivity'
+import { UserActivityType } from '../../../constants/constant'
 import connectDB from '../../../middleware/mongo'
 
 const options = {
@@ -13,8 +15,14 @@ const options = {
       }
       await connectDB()
       const result = await Employee.findOne({ email: email }).exec()
+      // entering login activity in the database
+      const activityObj = {
+        email: email,
+        activityType: UserActivityType.LOGIN,
+      }
+      const activity = new UserActivity(activityObj)
+      await activity.save()
       return result ? true : false
-      return false
     },
   },
   providers: [

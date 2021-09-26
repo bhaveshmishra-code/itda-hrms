@@ -2,6 +2,8 @@ import connectDB from 'middleware/mongo'
 import Leave from 'models/leave'
 import Department from 'models/department'
 import Employee from 'models/employee'
+import UserActivity from 'models/userActivity'
+import { UserActivityType } from 'constants/constant'
 
 import { LeaveStatusType } from 'constants/constant'
 import axios from 'axios'
@@ -240,4 +242,15 @@ export async function getAcceptedLeaves(payload) {
     .sort({ appliedDate: -1 })
     .exec()
   return leaves
+}
+
+export async function logOutUser(payload) {
+  await connectDB()
+  const activityObj = {
+    email: payload.email,
+    activityType: UserActivityType.LOGOUT,
+  }
+  const activity = new UserActivity(activityObj)
+  const result = await activity.save()
+  return result
 }
