@@ -254,3 +254,19 @@ export async function logOutUser(payload) {
   const result = await activity.save()
   return result
 }
+
+export async function editProfile(user, payload) {
+  await connectDB()
+  const filter = { email: user.email }
+  const update = {
+    employeeName: payload.employeeName,
+    designation: payload.designation,
+    department: payload.department,
+    phone: payload.phone,
+    placeOfPosting: payload.placeOfPosting,
+  }
+  await Employee.findOneAndUpdate(filter, update)
+  return {
+    success: true,
+  }
+}

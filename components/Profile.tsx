@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { getProfileQuery, QueryKey } from 'query/query'
 import { useQuery } from 'react-query'
 import Loading from './Loading'
+import Link from 'next/link'
+import { Button } from '@material-ui/core'
 
 const Page = styled.div`
   max-width: 600px;
@@ -30,6 +32,12 @@ const ProfilePage = styled.div`
   .value {
     font-weight: 500;
     color: #263238;
+  }
+
+  .editProfile {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: center;
   }
 `
 
@@ -77,6 +85,15 @@ export default function Profile({ user }) {
         <div className="row">
           <div className="label">REPORTING AUTHORITY</div>
           <div className="value">{data.reportingAuthority}</div>
+        </div>
+        <div className="editProfile">
+          <Link href="/editProfile">
+            <a>
+              <Button variant="contained" color="primary">
+                EDIT PROFILE
+              </Button>
+            </a>
+          </Link>
         </div>
       </ProfilePage>
     </Page>

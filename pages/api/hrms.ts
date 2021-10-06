@@ -12,6 +12,7 @@ import {
   getUser,
   getAcceptedLeaves,
   logOutUser,
+  editProfile,
 } from 'server/api'
 
 export default async function handle(req, res) {
@@ -58,6 +59,10 @@ export default async function handle(req, res) {
     case ApiAction.LOGOUT:
       var logOutResult = await logOutUser(payload)
       res.status(200).json('Logged out')
+      break
+    case ApiAction.EDIT_PROFILE:
+      var editProfileResult = await editProfile(session.user, payload)
+      res.status(200).json(editProfileResult)
       break
   }
 }
