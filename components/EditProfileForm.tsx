@@ -33,7 +33,6 @@ const SubmitButton = styled.div`
 const useStyles = makeStyles({
   form: {
     // bg-gray-100 w-80 mx-auto p-10 rounded-sm border-gray-400 border-1
-    backgroundColor: '#fafafa',
     width: '80%',
     margin: '0 auto',
   },
