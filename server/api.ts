@@ -266,6 +266,17 @@ export async function editProfile(user, payload) {
     placeOfPosting: payload.placeOfPosting,
   }
   await Employee.findOneAndUpdate(filter, update)
+  //update the details in all leaves also
+  // await MyModel.updateMany({}, { $set: { name: 'foo' } });
+  await Leave.updateMany(
+    { email: user.email },
+    {
+      employeeName: payload.employeeName,
+      designation: payload.designation,
+      department: payload.department,
+      placeOfPosting: payload.placeOfPosting,
+    }
+  )
   return {
     success: true,
   }
