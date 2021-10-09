@@ -32,6 +32,7 @@ const FormLabel = styled.div`
 const SwitchItem = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   color: gray;
   font-weight: 700;
 `
@@ -39,6 +40,7 @@ const SwitchItem = styled.div`
 const SubmitButton = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 `
 
 const useStyles = makeStyles({
@@ -290,18 +292,25 @@ export default function CreateEmployeeForm({ departments }) {
             </div>
           </div>
           <SwitchItem>
-            LEAVE SANCTION AUTHORITY
-            <Switch
-              id="isLeaveSanctionAuthority"
-              name="isLeaveSanctionAuthority"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              checked={formik.values.isLeaveSanctionAuthority}
-              color="primary"
-            />
+            <div>LEAVE SANCTION AUTHORITY</div>
+            <div>
+              <Switch
+                id="isLeaveSanctionAuthority"
+                name="isLeaveSanctionAuthority"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                checked={formik.values.isLeaveSanctionAuthority}
+                color="primary"
+              />
+            </div>
           </SwitchItem>
           <SubmitButton>
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              size="large"
+            >
               SUBMIT
             </Button>
           </SubmitButton>

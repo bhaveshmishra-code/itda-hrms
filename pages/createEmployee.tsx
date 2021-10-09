@@ -2,6 +2,7 @@ import React from 'react'
 import CreateEmployeeForm from '../components/CreateEmployeeForm'
 import { getDepartmentListQuery, QueryKey } from 'query/query'
 import { useQuery } from 'react-query'
+import Loading from 'components/Loading'
 
 export default function CreateEmployee() {
   const { data, isLoading, refetch } = useQuery(
@@ -10,7 +11,7 @@ export default function CreateEmployee() {
   )
 
   if (isLoading) {
-    return 'Loading department list'
+    return <Loading />
   }
 
   return (
