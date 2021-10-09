@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/LeaveStatus.js", "components/AppDrawer.tsx", "models/leave.js", "models/employee.js", "models/department.js"  ],
+, "components/LeaveStatus.js", "components/AppDrawer.tsx", "models/leave.js", "models/employee.js", "models/department.js", "node/models/constant.js"  ],
   "exclude": [
     "node_modules"
   ]

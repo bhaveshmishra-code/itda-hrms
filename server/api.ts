@@ -234,10 +234,25 @@ export async function getUser(payload) {
 export async function getAcceptedLeaves(payload) {
   await connectDB()
 
-  const leaves = await Leave.find({
+  //get the department of reporting authority
+  const employee = await Employee.findOne({
+    email: payload.reportingAuthority,
+  }).exec()
+
+  const departmentFilter = {
+    status: LeaveStatusType.ACCEPTED,
+    leaveDates: payload.filterDate,
+    department: employee.department,
+  }
+
+  const reportingAuthorityFilter = {
     status: LeaveStatusType.ACCEPTED,
     leaveDates: payload.filterDate,
     reportingAuthority: payload.reportingAuthority,
+  }
+
+  const leaves = await Leave.find({
+    $or: [departmentFilter, reportingAuthorityFilter],
   })
     .sort({ appliedDate: -1 })
     .exec()
