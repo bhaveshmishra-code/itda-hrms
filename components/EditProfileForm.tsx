@@ -12,7 +12,6 @@ import * as Yup from 'yup'
 const validateSchema = Yup.object().shape({
   employeeName: Yup.string().required('Required'),
   designation: Yup.string().required('Required'),
-  department: Yup.string().required('Required'),
   placeOfPosting: Yup.string().required('Required'),
   phone: Yup.number()
     .positive('Must be a positive number')
@@ -75,7 +74,6 @@ export default function EditProfileForm({ profile }) {
   const formik = useFormik({
     initialValues: {
       employeeName: profile.employeeName,
-      department: profile.department,
       designation: profile.designation,
       placeOfPosting: profile.placeOfPosting,
       phone: profile.phone,
@@ -151,24 +149,6 @@ export default function EditProfileForm({ profile }) {
             <div className={styles.error}>
               {formik.touched.designation && formik.errors.designation ? (
                 <ErrorText>{formik.errors.designation} </ErrorText>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <FormLabel>Department</FormLabel>
-            <TextField
-              id="department"
-              name="department"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.department}
-              variant="outlined"
-              fullWidth
-              size="small"
-            />
-            <div className={styles.error}>
-              {formik.touched.department && formik.errors.department ? (
-                <ErrorText>{formik.errors.department} </ErrorText>
               ) : null}
             </div>
           </div>

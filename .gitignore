@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# node internal development
+/node/
+
 # production
 /build
 

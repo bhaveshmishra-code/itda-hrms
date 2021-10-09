@@ -261,7 +261,6 @@ export async function editProfile(user, payload) {
   const update = {
     employeeName: payload.employeeName,
     designation: payload.designation,
-    department: payload.department,
     phone: payload.phone,
     placeOfPosting: payload.placeOfPosting,
   }
@@ -273,7 +272,6 @@ export async function editProfile(user, payload) {
     {
       employeeName: payload.employeeName,
       designation: payload.designation,
-      department: payload.department,
       placeOfPosting: payload.placeOfPosting,
     }
   )
