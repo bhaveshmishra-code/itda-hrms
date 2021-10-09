@@ -35,11 +35,13 @@ var employeeSchema = new Schema({
   },
   isLeaveSanctionAuthority: {
     type: Boolean,
+    default: false,
     required: true,
   },
   isCreateUserAuthority: {
     type: Boolean,
     required: true,
+    default: false,
   },
 })
 

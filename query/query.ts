@@ -22,6 +22,15 @@ export const getAcceptedLeavesQuery = async (filterDate, user) => {
   return result.data
 }
 
+export const getDepartmentListQuery = async () => {
+  const result = await axios.post('/api/hrms', {
+    action: ApiAction.GET_DEPARTMENT,
+    payload: {},
+  })
+  return result.data
+}
+
 export const QueryKey = {
   PROFILE_QUERY: 'profile_query',
+  GET_DEPARTMENT_QUERY: 'get_department_query',
 }

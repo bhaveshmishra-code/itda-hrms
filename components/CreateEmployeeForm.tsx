@@ -1,4 +1,4 @@
-import { Button, Snackbar } from '@material-ui/core'
+import { Button, MenuItem, Select, Snackbar } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
@@ -43,8 +43,6 @@ const SubmitButton = styled.div`
 
 const useStyles = makeStyles({
   form: {
-    // bg-gray-100 w-80 mx-auto p-10 rounded-sm border-gray-400 border-1
-    backgroundColor: '#fafafa',
     width: '80%',
     margin: '0 auto',
   },
@@ -80,7 +78,7 @@ const ErrorText = styled.div`
   color: #e57373;
 `
 
-export default function CreateEmployeeForm() {
+export default function CreateEmployeeForm({ departments }) {
   const styles = useStyles()
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState({ type: '', msg: '' })
@@ -95,7 +93,6 @@ export default function CreateEmployeeForm() {
       email: '',
       phone: '',
       isLeaveSanctionAuthority: false,
-      isCreateUserAuthority: false,
     },
     validationSchema: validateSchema,
     onSubmit: (values) => {
@@ -191,22 +188,32 @@ export default function CreateEmployeeForm() {
           </div>
           <div>
             <FormLabel>Department</FormLabel>
-            <TextField
+            <Select
               id="department"
               name="department"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.department}
-              variant="outlined"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               fullWidth
-              size="small"
-            />
+              style={{
+                height: '40px',
+                backgroundColor: 'white',
+                display: 'flex',
+              }}
+            >
+              {departments.map((item) => (
+                <MenuItem key={item._id} value={item.departmentName}>
+                  {item.departmentName}
+                </MenuItem>
+              ))}
+            </Select>
             <div className={styles.error}>
               {formik.touched.department && formik.errors.department ? (
                 <ErrorText>{formik.errors.department} </ErrorText>
               ) : null}
             </div>
           </div>
+
           <div>
             <FormLabel>Place of Posting</FormLabel>
             <TextField
@@ -283,26 +290,13 @@ export default function CreateEmployeeForm() {
             </div>
           </div>
           <SwitchItem>
-            LEAVE SANCTION RIGHT
+            LEAVE SANCTION AUTHORITY
             <Switch
               id="isLeaveSanctionAuthority"
               name="isLeaveSanctionAuthority"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              // value={formik.values.isLeaveSanctionAuthority}
               checked={formik.values.isLeaveSanctionAuthority}
-              color="primary"
-            />
-          </SwitchItem>
-          <SwitchItem>
-            CREATE USER RIGHT
-            <Switch
-              id="isCreateUserAuthority"
-              name="isCreateUserAuthority"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              // value={formik.values.isLeaveSanctionAuthority}
-              checked={formik.values.isCreateUserAuthority}
               color="primary"
             />
           </SwitchItem>

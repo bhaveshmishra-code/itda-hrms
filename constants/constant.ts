@@ -10,6 +10,7 @@ export enum ApiAction {
   GET_ACCEPTED_LEAVES,
   LOGOUT,
   EDIT_PROFILE,
+  GET_DEPARTMENT,
 }
 
 export enum LeaveStatusType {

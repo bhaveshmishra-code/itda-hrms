@@ -34,7 +34,6 @@ const validateSchema = Yup.object().shape({
 
 const useStyles = makeStyles({
   leaveForm: {
-    backgroundColor: '#fafafa',
     width: '80%',
     margin: '0 auto',
   },

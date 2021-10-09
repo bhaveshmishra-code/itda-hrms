@@ -294,3 +294,9 @@ export async function editProfile(user, payload) {
     success: true,
   }
 }
+
+export async function getDepartmentList() {
+  await connectDB()
+  const departments = await Department.find().exec()
+  return departments
+}
